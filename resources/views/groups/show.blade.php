@@ -116,65 +116,65 @@
                 Zobrazují se jen seznamy, které jejich majitelé zpřístupnili této konkrétní skupině.
             </p>
 
-            @if($otherMembersWishlists->isEmpty())
+            @if($groupWishlists->isEmpty())
                 <div class="bg-white rounded-3xl p-12 text-center border border-[#F0E8DD] shadow-sm">
                     <div class="text-5xl mb-3">📦</div>
                     <h3 class="text-lg font-bold text-gray-800">Zatím tu nejsou žádné sdílené seznamy</h3>
-                    <p class="text-gray-500 text-xs mt-1">Až někdo ze skupiny zpřístupní svůj seznam, objeví se tady.</p>
+                    <p class="text-gray-500 text-xs mt-1">Až někdo ze skupiny zpřístupní svůj seznam, objeví se tady. Svůj vlastní seznam zpřístupníte na jeho stránce.</p>
                 </div>
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @foreach($otherMembersWishlists as $wishlist)
-                        <div class="bg-white rounded-3xl border border-[#F0E8DD] shadow-sm hover:shadow-md transition p-6 flex flex-col justify-between">
+                    @foreach($groupWishlists as $wishlist)
+                        @php($isMyWishlist = $wishlist->user_id === auth()->id())
+                        <div class="bg-white rounded-3xl border {{ $isMyWishlist ? 'border-[#D4AF37]' : 'border-[#F0E8DD]' }} shadow-sm hover:shadow-md transition p-6 flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-3">
                                     <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 font-medium px-2.5 py-0.5 rounded-full text-xs">
                                         <span>{{ $wishlist->occasion_icon }}</span>
                                         <span>{{ $wishlist->occasion_label }}</span>
                                     </span>
-                                    <span class="text-xs text-gray-400">{{ $wishlist->user->name }}</span>
+                                    @if($isMyWishlist)
+                                        <span class="bg-[#D4AF37] text-gray-900 text-[10px] font-bold px-2 py-0.5 rounded-full">Váš seznam</span>
+                                    @else
+                                        <span class="text-xs text-gray-400">{{ $wishlist->user->name }}</span>
+                                    @endif
                                 </div>
                                 <h3 class="text-lg font-bold text-gray-900 font-serif mb-1">{{ $wishlist->title }}</h3>
-                                <div class="mt-4">
-                                    <div class="flex justify-between items-center text-xs text-gray-600 mb-1">
-                                        <span>Rezervováno dárků</span>
-                                        <span class="font-bold text-[#6B1D2F]">{{ $wishlist->progress_percentage }}%</span>
+                                @if($wishlist->is_public)
+                                    <div class="mt-4 bg-sky-50 border border-sky-200 text-sky-900 text-[11px] rounded-xl px-3 py-2 flex items-center gap-2">
+                                        <span>💡</span>
+                                        <span>Veřejný seznam — jen inspirace, bez rezervací</span>
                                     </div>
-                                    <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                                        <div class="bg-[#D4AF37] h-full rounded-full" style="width: {{ $wishlist->progress_percentage }}%"></div>
+                                @else
+                                    <div class="mt-4">
+                                        <div class="flex justify-between items-center text-xs text-gray-600 mb-1">
+                                            <span>Rezervováno dárků</span>
+                                            <span class="font-bold text-[#6B1D2F]">{{ $wishlist->progress_percentage }}%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                                            <div class="bg-[#D4AF37] h-full rounded-full" style="width: {{ $wishlist->progress_percentage }}%"></div>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             </div>
                             <div class="mt-6 pt-4 border-t border-gray-100">
-                                <a href="{{ route('public.wishlists.show', $wishlist->share_code) }}"
-                                   class="w-full inline-flex items-center justify-center gap-2 bg-amber-100 hover:bg-amber-200 text-[#6B1D2F] font-semibold text-xs py-2.5 px-4 rounded-xl transition">
-                                    <span>🎁 Zobrazit seznam a vybrat dárek</span>
-                                </a>
+                                @if($isMyWishlist)
+                                    <a href="{{ route('wishlists.show', $wishlist) }}"
+                                       class="w-full inline-flex items-center justify-center gap-2 bg-amber-100 hover:bg-amber-200 text-[#6B1D2F] font-semibold text-xs py-2.5 px-4 rounded-xl transition">
+                                        <span>✏️ Spravovat seznam</span>
+                                    </a>
+                                @else
+                                    <a href="{{ route('public.wishlists.show', $wishlist->share_code) }}"
+                                       class="w-full inline-flex items-center justify-center gap-2 bg-amber-100 hover:bg-amber-200 text-[#6B1D2F] font-semibold text-xs py-2.5 px-4 rounded-xl transition">
+                                        <span>🎁 Zobrazit seznam a vybrat dárek</span>
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     @endforeach
                 </div>
             @endif
         </div>
-
-        <!-- Moje seznamy v této skupině -->
-        @if($myWishlistsInGroup->isNotEmpty())
-            <div>
-                <h2 class="text-xl font-bold text-[#6B1D2F] mb-1 flex items-center gap-2">
-                    <span>📤</span> Moje seznamy sdílené v této skupině
-                </h2>
-                <p class="text-xs text-gray-500 mb-4">
-                    Sdílení jednotlivých seznamů upravíte přímo na jejich stránce.
-                </p>
-                <div class="flex flex-wrap gap-2">
-                    @foreach($myWishlistsInGroup as $wishlist)
-                        <a href="{{ route('wishlists.show', $wishlist) }}" class="inline-flex items-center gap-1.5 bg-white border border-[#F0E8DD] rounded-xl px-3 py-2 text-xs font-medium text-gray-700 hover:border-[#D4AF37] transition">
-                            🎁 {{ $wishlist->title }}
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-        @endif
     </div>
 
     <!-- Modal pro pozvání člena -->

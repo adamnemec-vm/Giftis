@@ -69,18 +69,25 @@
                             <!-- Card Body: Progress Bar & Items Preview -->
                             <div class="p-6 space-y-5 flex-grow">
                                 <!-- Progress Bar -->
-                                <div>
-                                    <div class="flex justify-between items-center text-xs font-semibold mb-1">
-                                        <span class="text-gray-600">Stav rezervací</span>
-                                        <span class="text-[#6B1D2F] font-bold">{{ $wishlist->progress_percentage }}% rezervováno</span>
+                                @if($wishlist->is_public)
+                                    <div class="bg-sky-50 border border-sky-200 text-sky-900 text-xs rounded-xl px-3 py-2 flex items-center gap-2">
+                                        <span>💡</span>
+                                        <span>Veřejný — jen inspirace, bez rezervací</span>
                                     </div>
-                                    <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden p-0.5 border border-gray-200">
-                                        <div class="bg-[#D4AF37] h-full rounded-full transition-all duration-500 shadow-inner" style="width: {{ $wishlist->progress_percentage }}%"></div>
+                                @else
+                                    <div>
+                                        <div class="flex justify-between items-center text-xs font-semibold mb-1">
+                                            <span class="text-gray-600">Stav rezervací</span>
+                                            <span class="text-[#6B1D2F] font-bold">{{ $wishlist->progress_percentage }}% rezervováno</span>
+                                        </div>
+                                        <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden p-0.5 border border-gray-200">
+                                            <div class="bg-[#D4AF37] h-full rounded-full transition-all duration-500 shadow-inner" style="width: {{ $wishlist->progress_percentage }}%"></div>
+                                        </div>
+                                        <div class="text-[#6B1D2F] text-xs mt-1 text-right font-medium">
+                                            {{ $wishlist->reserved_count }} z {{ $wishlist->total_count }} dárků zabráno
+                                        </div>
                                     </div>
-                                    <div class="text-[#6B1D2F] text-xs mt-1 text-right font-medium">
-                                        {{ $wishlist->reserved_count }} z {{ $wishlist->total_count }} dárků zabráno
-                                    </div>
-                                </div>
+                                @endif
 
                                 <!-- Items Preview -->
                                 <div class="border-t border-gray-100 pt-4">
@@ -237,21 +244,16 @@
                                     <p class="text-gray-500 text-xs line-clamp-2 mb-4">{{ $publicList->description }}</p>
                                 @endif
 
-                                <div class="mt-4">
-                                    <div class="flex justify-between items-center text-xs text-gray-600 mb-1">
-                                        <span>Rezervováno dárků</span>
-                                        <span class="font-bold text-[#6B1D2F]">{{ $publicList->progress_percentage }}%</span>
-                                    </div>
-                                    <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                                        <div class="bg-[#D4AF37] h-full rounded-full" style="width: {{ $publicList->progress_percentage }}%"></div>
-                                    </div>
+                                <div class="mt-4 bg-sky-50 border border-sky-200 text-sky-900 text-[11px] rounded-xl px-3 py-2 flex items-center gap-2">
+                                    <span>💡</span>
+                                    <span>Veřejný seznam — jen inspirace, bez rezervací</span>
                                 </div>
                             </div>
 
                             <div class="mt-6 pt-4 border-t border-gray-100">
-                                <a href="{{ route('public.wishlists.show', $publicList->share_code) }}" 
+                                <a href="{{ route('public.wishlists.show', $publicList->share_code) }}"
                                    class="w-full inline-flex items-center justify-center gap-2 bg-amber-100 hover:bg-amber-200 text-[#6B1D2F] font-semibold text-xs py-2.5 px-4 rounded-xl transition">
-                                    <span>🎁 Zobrazit seznam a vybrat dárek</span>
+                                    <span>🎁 Zobrazit seznam</span>
                                 </a>
                             </div>
                         </div>

@@ -45,15 +45,11 @@ class GroupController extends Controller
         $user = auth()->user();
         $isOwner = $user->id === $group->owner_id;
 
-        $myWishlistsInGroup = $user->wishlists()->whereHas('groups', fn ($q) => $q->where('groups.id', $group->id))->get();
-        $myWishlistsNotInGroup = $user->wishlists()->whereDoesntHave('groups', fn ($q) => $q->where('groups.id', $group->id))->get();
-
-        $otherMembersWishlists = \App\Models\Wishlist::whereHas('groups', fn ($q) => $q->where('groups.id', $group->id))
-            ->where('user_id', '!=', $user->id)
+        $groupWishlists = \App\Models\Wishlist::whereHas('groups', fn ($q) => $q->where('groups.id', $group->id))
             ->with(['user', 'items'])
             ->get();
 
-        return view('groups.show', compact('group', 'isOwner', 'myWishlistsInGroup', 'myWishlistsNotInGroup', 'otherMembersWishlists'));
+        return view('groups.show', compact('group', 'isOwner', 'groupWishlists'));
     }
 
     public function destroy(Group $group)

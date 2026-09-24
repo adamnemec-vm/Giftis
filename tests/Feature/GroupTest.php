@@ -226,6 +226,23 @@ class GroupTest extends TestCase
         $response->assertDontSee('Neviditelný seznam');
     }
 
+    public function test_group_page_also_shows_my_own_wishlist_shared_with_the_group(): void
+    {
+        $owner = User::factory()->create();
+        $group = Group::factory()->for($owner, 'owner')->create();
+        $group->members()->attach($owner->id, ['status' => 'accepted']);
+
+        $ownWishlist = Wishlist::factory()->for($owner)->create(['title' => 'Můj sdílený seznam']);
+        $ownWishlist->groups()->attach($group->id);
+
+        $notSharedWishlist = Wishlist::factory()->for($owner)->create(['title' => 'Nesdílený seznam']);
+
+        $response = $this->actingAs($owner)->get(route('groups.show', $group));
+
+        $response->assertSee('Můj sdílený seznam');
+        $response->assertDontSee('Nesdílený seznam');
+    }
+
     public function test_dashboard_shows_wishlists_shared_via_my_groups(): void
     {
         $owner = User::factory()->create();

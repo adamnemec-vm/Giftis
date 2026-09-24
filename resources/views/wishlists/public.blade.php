@@ -120,19 +120,21 @@
                     @endif
                 </div>
 
-                <!-- Progress bar -->
-                <div class="w-full md:w-72 shrink-0 bg-white p-4 rounded-2xl border border-gray-200">
-                    <div class="flex justify-between items-center text-xs font-bold text-[#6B1D2F] mb-1.5">
-                        <span>Stav rezervovaných dárků</span>
-                        <span>{{ $wishlist->progress_percentage }}%</span>
+                @unless($wishlist->is_public)
+                    <!-- Progress bar -->
+                    <div class="w-full md:w-72 shrink-0 bg-white p-4 rounded-2xl border border-gray-200">
+                        <div class="flex justify-between items-center text-xs font-bold text-[#6B1D2F] mb-1.5">
+                            <span>Stav rezervovaných dárků</span>
+                            <span>{{ $wishlist->progress_percentage }}%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden p-0.5 border border-gray-200">
+                            <div class="bg-[#D4AF37] h-full rounded-full transition-all duration-500" style="width: {{ $wishlist->progress_percentage }}%"></div>
+                        </div>
+                        <div class="text-[11px] text-gray-500 text-center mt-2 font-medium">
+                            {{ $wishlist->reserved_count }} z {{ $wishlist->total_count }} dárků již někdo vybral
+                        </div>
                     </div>
-                    <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden p-0.5 border border-gray-200">
-                        <div class="bg-[#D4AF37] h-full rounded-full transition-all duration-500" style="width: {{ $wishlist->progress_percentage }}%"></div>
-                    </div>
-                    <div class="text-[11px] text-gray-500 text-center mt-2 font-medium">
-                        {{ $wishlist->reserved_count }} z {{ $wishlist->total_count }} dárků již někdo vybral
-                    </div>
-                </div>
+                @endunless
             </div>
         </div>
 
@@ -193,21 +195,23 @@
                                 @endif
 
                                 <!-- Status Badge -->
-                                <div class="absolute top-3 right-3">
-                                    @if($item->isAvailable())
-                                        <span class="bg-emerald-500 text-white font-bold text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1">
-                                            <span>✨</span> Volné k rezervaci
-                                        </span>
-                                    @elseif($isMyReservation)
-                                        <span class="bg-[#D4AF37] text-gray-900 font-bold text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1">
-                                            <span>✅</span> Vybrali jste vy
-                                        </span>
-                                    @else
-                                        <span class="bg-gray-700 text-white font-bold text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1">
-                                            <span>🔒</span> Rezervováno
-                                        </span>
-                                    @endif
-                                </div>
+                                @unless($wishlist->is_public)
+                                    <div class="absolute top-3 right-3">
+                                        @if($item->isAvailable())
+                                            <span class="bg-emerald-500 text-white font-bold text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1">
+                                                <span>✨</span> Volné k rezervaci
+                                            </span>
+                                        @elseif($isMyReservation)
+                                            <span class="bg-[#D4AF37] text-gray-900 font-bold text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1">
+                                                <span>✅</span> Vybrali jste vy
+                                            </span>
+                                        @else
+                                            <span class="bg-gray-700 text-white font-bold text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1">
+                                                <span>🔒</span> Rezervováno
+                                            </span>
+                                        @endif
+                                    </div>
+                                @endunless
                             </div>
 
                             <!-- Detail dárku -->
@@ -237,7 +241,7 @@
                                     </div>
                                 @endif
 
-                                @if($item->is_group_gift && $item->price)
+                                @if($item->is_group_gift && $item->price && ! $wishlist->is_public)
                                     <div class="pt-2">
                                         <div class="flex justify-between items-center text-[11px] font-bold text-[#6B1D2F] mb-1">
                                             <span>Vybráno na dárek</span>

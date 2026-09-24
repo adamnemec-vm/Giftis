@@ -219,4 +219,30 @@ class PublicWishlistReservationTest extends TestCase
         $response->assertSessionHas('error');
         $this->assertSame('reserved', $item->refresh()->status);
     }
+
+    public function test_a_public_wishlist_does_not_show_the_reservation_progress_bar_or_availability_badge(): void
+    {
+        $owner = User::factory()->create();
+        $wishlist = Wishlist::factory()->for($owner)->public()->create();
+        GiftItem::factory()->for($wishlist)->create();
+
+        $response = $this->get(route('public.wishlists.show', $wishlist->share_code));
+
+        $response->assertOk();
+        $response->assertDontSee('Stav rezervovaných dárků');
+        $response->assertDontSee('Volné k rezervaci');
+    }
+
+    public function test_a_private_wishlist_still_shows_the_reservation_progress_bar_and_availability_badge(): void
+    {
+        $owner = User::factory()->create();
+        $wishlist = Wishlist::factory()->for($owner)->create();
+        GiftItem::factory()->for($wishlist)->create();
+
+        $response = $this->get(route('public.wishlists.show', $wishlist->share_code));
+
+        $response->assertOk();
+        $response->assertSee('Stav rezervovaných dárků');
+        $response->assertSee('Volné k rezervaci');
+    }
 }
