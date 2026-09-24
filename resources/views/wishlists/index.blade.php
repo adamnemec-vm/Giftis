@@ -144,7 +144,69 @@
             @endif
         </div>
 
-        <!-- Sekce 2: Veřejné wishlisty od jiných lidí -->
+        <!-- Sekce 2: Seznamy ve skupinách -->
+        @if($groupWishlists->isNotEmpty())
+            <div class="border-t border-[#F0E8DD] pt-10">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-[#6B1D2F] flex items-center gap-2">
+                            <span>👨‍👩‍👧‍👦</span> Seznamy ve skupinách
+                        </h2>
+                        <p class="text-gray-500 text-xs mt-0.5">Seznamy členů vašich skupin, kteří vám je zpřístupnili.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($groupWishlists as $groupWishlist)
+                        <div class="bg-white rounded-3xl border border-[#F0E8DD] p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 font-medium px-2.5 py-0.5 rounded-full text-xs">
+                                        <span>{{ $groupWishlist->occasion_icon }}</span>
+                                        <span>{{ $groupWishlist->occasion_label }}</span>
+                                    </span>
+                                    <span class="text-xs text-gray-400">Autor: {{ $groupWishlist->user->name }}</span>
+                                </div>
+
+                                <h3 class="text-lg font-bold text-gray-900 font-serif mb-1">
+                                    {{ $groupWishlist->title }}
+                                </h3>
+                                @if($groupWishlist->description)
+                                    <p class="text-gray-500 text-xs line-clamp-2 mb-2">{{ $groupWishlist->description }}</p>
+                                @endif
+
+                                <div class="flex flex-wrap gap-1.5 mb-4">
+                                    @foreach($groupWishlist->groups as $sharedGroup)
+                                        <span class="inline-flex items-center gap-1 bg-amber-50 text-[#6B1D2F] border border-[#D4AF37]/40 px-2 py-0.5 rounded-full text-[10px] font-medium">
+                                            👨‍👩‍👧‍👦 {{ $sharedGroup->name }}
+                                        </span>
+                                    @endforeach
+                                </div>
+
+                                <div class="mt-4">
+                                    <div class="flex justify-between items-center text-xs text-gray-600 mb-1">
+                                        <span>Rezervováno dárků</span>
+                                        <span class="font-bold text-[#6B1D2F]">{{ $groupWishlist->progress_percentage }}%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                                        <div class="bg-[#D4AF37] h-full rounded-full" style="width: {{ $groupWishlist->progress_percentage }}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 pt-4 border-t border-gray-100">
+                                <a href="{{ route('public.wishlists.show', $groupWishlist->share_code) }}"
+                                   class="w-full inline-flex items-center justify-center gap-2 bg-amber-100 hover:bg-amber-200 text-[#6B1D2F] font-semibold text-xs py-2.5 px-4 rounded-xl transition">
+                                    <span>🎁 Zobrazit seznam a vybrat dárek</span>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        <!-- Sekce 3: Veřejné wishlisty od jiných lidí -->
         @if($publicWishlists->isNotEmpty())
             <div class="border-t border-[#F0E8DD] pt-10">
                 <div class="flex items-center justify-between mb-6">

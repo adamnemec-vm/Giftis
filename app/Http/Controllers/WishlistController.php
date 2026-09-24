@@ -26,7 +26,18 @@ class WishlistController extends Controller
             ->take(6)
             ->get();
 
-        return view('wishlists.index', compact('myWishlists', 'publicWishlists'));
+        // Seznamy ostatních členů skupin, které zpřístupnili konkrétně nám
+        $myGroupIds = $user->groups()->pluck('groups.id');
+        $groupWishlists = Wishlist::with(['user', 'items', 'groups' => function ($query) use ($myGroupIds) {
+            $query->whereIn('groups.id', $myGroupIds);
+        }])
+            ->whereHas('groups', fn ($query) => $query->whereIn('groups.id', $myGroupIds))
+            ->where('user_id', '!=', $user->id)
+            ->whereNull('suspended_at')
+            ->latest()
+            ->get();
+
+        return view('wishlists.index', compact('myWishlists', 'publicWishlists', 'groupWishlists'));
     }
 
     public function store(StoreWishlistRequest $request)

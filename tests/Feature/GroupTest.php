@@ -225,4 +225,54 @@ class GroupTest extends TestCase
         $response->assertSee('Sdílený seznam');
         $response->assertDontSee('Neviditelný seznam');
     }
+
+    public function test_dashboard_shows_wishlists_shared_via_my_groups(): void
+    {
+        $owner = User::factory()->create();
+        $member = User::factory()->create();
+        $group = Group::factory()->for($owner, 'owner')->create(['name' => 'Rodina']);
+        $group->members()->attach([$owner->id => ['status' => 'accepted'], $member->id => ['status' => 'accepted']]);
+
+        $sharedWishlist = Wishlist::factory()->for($member)->create(['title' => 'Sdílený v dashboardu']);
+        $sharedWishlist->groups()->attach($group->id);
+
+        $unsharedWishlist = Wishlist::factory()->for($member)->create(['title' => 'Neviditelný v dashboardu']);
+
+        $response = $this->actingAs($owner)->get(route('dashboard'));
+
+        $response->assertSee('Sdílený v dashboardu');
+        $response->assertSee('Rodina');
+        $response->assertDontSee('Neviditelný v dashboardu');
+    }
+
+    public function test_dashboard_does_not_show_group_wishlists_to_non_members(): void
+    {
+        $owner = User::factory()->create();
+        $member = User::factory()->create();
+        $stranger = User::factory()->create();
+        $group = Group::factory()->for($owner, 'owner')->create();
+        $group->members()->attach([$owner->id => ['status' => 'accepted'], $member->id => ['status' => 'accepted']]);
+
+        $sharedWishlist = Wishlist::factory()->for($member)->create(['title' => 'Skupinový seznam']);
+        $sharedWishlist->groups()->attach($group->id);
+
+        $response = $this->actingAs($stranger)->get(route('dashboard'));
+
+        $response->assertDontSee('Skupinový seznam');
+    }
+
+    public function test_dashboard_does_not_show_my_own_wishlist_in_the_group_section(): void
+    {
+        $owner = User::factory()->create();
+        $group = Group::factory()->for($owner, 'owner')->create();
+        $group->members()->attach($owner->id, ['status' => 'accepted']);
+
+        $ownWishlist = Wishlist::factory()->for($owner)->create(['title' => 'Můj vlastní seznam']);
+        $ownWishlist->groups()->attach($group->id);
+
+        $response = $this->actingAs($owner)->get(route('dashboard'));
+
+        // Objeví se jednou v sekci "Moje Wishlisty", ne navíc v sekci skupin.
+        $response->assertSeeInOrder(['Moje Wishlisty (1)', 'Můj vlastní seznam']);
+    }
 }
