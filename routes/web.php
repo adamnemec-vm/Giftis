@@ -6,10 +6,13 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\WishlistController as AdminWishlistController;
 use App\Http\Controllers\GiftContributionController;
 use App\Http\Controllers\GiftItemController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\GroupInvitationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicWishlistController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\WishlistGroupController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -55,6 +58,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/gift-items/{item}/clear-reservation', [GiftItemController::class, 'clearReservation'])->name('gift-items.clear-reservation');
 
     Route::get('/my-reservations', [ReservationController::class, 'index'])->name('reservations.index');
+
+    Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
+    Route::post('/groups', [GroupController::class, 'store'])->name('groups.store');
+    Route::get('/groups/{group}', [GroupController::class, 'show'])->name('groups.show');
+    Route::delete('/groups/{group}', [GroupController::class, 'destroy'])->name('groups.destroy');
+    Route::post('/groups/{group}/invite', [GroupInvitationController::class, 'store'])->name('groups.invite');
+    Route::post('/groups/{group}/leave', [GroupController::class, 'leave'])->name('groups.leave');
+    Route::delete('/groups/{group}/members/{user}', [GroupController::class, 'removeMember'])->name('groups.members.remove');
+    Route::post('/groups/{group}/accept', [GroupInvitationController::class, 'accept'])->name('groups.invitations.accept');
+    Route::post('/groups/{group}/decline', [GroupInvitationController::class, 'decline'])->name('groups.invitations.decline');
+
+    Route::put('/wishlists/{wishlist}/groups', [WishlistGroupController::class, 'update'])->name('wishlists.groups.update');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

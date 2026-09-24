@@ -83,4 +83,16 @@ class WishlistModerationTest extends TestCase
         $response->assertRedirect(route('wishlists.show', $wishlist));
         $this->assertFalse($wishlist->refresh()->isSuspended());
     }
+
+    public function test_admin_can_delete_someone_elses_wishlist(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $owner = User::factory()->create();
+        $wishlist = Wishlist::factory()->for($owner)->create();
+
+        $response = $this->actingAs($admin)->delete(route('wishlists.destroy', $wishlist));
+
+        $response->assertRedirect(route('admin.users.show', $owner));
+        $this->assertDatabaseMissing('wishlists', ['id' => $wishlist->id]);
+    }
 }

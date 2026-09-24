@@ -21,6 +21,14 @@
                         {{ __('Moje rezervace') }}
                     </x-nav-link>
 
+                    <x-nav-link :href="route('groups.index')" :active="request()->routeIs('groups.*')" class="text-white hover:text-[#D4AF37] focus:outline-none transition relative">
+                        {{ __('Skupiny') }}
+                        @php($pendingGroupInvitesCount = auth()->user()->pendingGroupInvitations()->count())
+                        @if($pendingGroupInvitesCount > 0)
+                            <span class="ms-1 inline-flex items-center justify-center bg-[#D4AF37] text-gray-900 text-[10px] font-bold rounded-full w-4 h-4">{{ $pendingGroupInvitesCount }}</span>
+                        @endif
+                    </x-nav-link>
+
                     @if(auth()->user()->is_admin)
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')" class="text-white hover:text-[#D4AF37] focus:outline-none transition">
                             {{ __('🛠️ Administrace') }}
@@ -83,6 +91,13 @@
 
             <x-responsive-nav-link :href="route('reservations.index')" :active="request()->routeIs('reservations.index')" class="text-white">
                 {{ __('Moje rezervace') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('groups.index')" :active="request()->routeIs('groups.*')" class="text-white">
+                {{ __('Skupiny') }}
+                @if($pendingGroupInvitesCount > 0)
+                    <span class="ms-1 inline-flex items-center justify-center bg-[#D4AF37] text-gray-900 text-[10px] font-bold rounded-full w-4 h-4">{{ $pendingGroupInvitesCount }}</span>
+                @endif
             </x-responsive-nav-link>
 
             @if(auth()->user()->is_admin)

@@ -64,4 +64,26 @@ class User extends Authenticatable
     {
         return $this->hasMany(GiftContribution::class, 'contributor_user_id');
     }
+
+    public function ownedGroups()
+    {
+        return $this->hasMany(Group::class, 'owner_id');
+    }
+
+    public function groupMemberships()
+    {
+        return $this->belongsToMany(Group::class, 'group_members')
+            ->withPivot('status', 'invited_by_user_id')
+            ->withTimestamps();
+    }
+
+    public function groups()
+    {
+        return $this->groupMemberships()->wherePivot('status', 'accepted');
+    }
+
+    public function pendingGroupInvitations()
+    {
+        return $this->groupMemberships()->wherePivot('status', 'invited');
+    }
 }

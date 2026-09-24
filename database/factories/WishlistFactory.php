@@ -21,14 +21,14 @@ class WishlistFactory extends Factory
             'occasion' => fake()->randomElement(['christmas', 'birthday', 'wedding', 'anniversary', 'other']),
             'event_date' => fake()->optional()->dateTimeBetween('now', '+1 year'),
             'share_code' => Str::lower(Str::random(10)),
-            'is_public' => true,
+            'is_public' => false,
         ];
     }
 
-    public function private(): static
+    public function public(): static
     {
         return $this->state(fn (array $attributes) => [
-            'is_public' => false,
+            'is_public' => true,
         ]);
     }
 }

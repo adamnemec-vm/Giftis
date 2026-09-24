@@ -43,6 +43,10 @@ class PublicWishlistController extends Controller
             return redirect()->back()->with('error', 'Nemůžete si rezervovat dárky ve svém vlastním seznamu.');
         }
 
+        if ($wishlist->is_public) {
+            return redirect()->back()->with('error', 'Tento seznam je veřejný a slouží pouze jako inspirace — rezervace dárků zde nejsou povolené.');
+        }
+
         $reservedByName = 'Anonymní přítel';
         $userId = null;
 
@@ -119,6 +123,10 @@ class PublicWishlistController extends Controller
 
         if ($item->wishlist_id !== $wishlist->id || $wishlist->isSuspended()) {
             abort(404);
+        }
+
+        if ($wishlist->is_public) {
+            return redirect()->back()->with('error', 'Tento seznam je veřejný a slouží pouze jako inspirace — rezervace dárků zde nejsou povolené.');
         }
 
         $guestToken = session()->get('giftis_guest_token');

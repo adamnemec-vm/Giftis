@@ -35,6 +35,11 @@ class Wishlist extends Model
         return $this->hasMany(GiftItem::class);
     }
 
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_wishlist')->withTimestamps();
+    }
+
     public function getProgressPercentageAttribute(): int
     {
         $total = $this->items->count();

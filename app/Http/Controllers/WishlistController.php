@@ -57,7 +57,11 @@ class WishlistController extends Controller
 
         $wishlist->load('items');
 
-        return view('wishlists.show', compact('wishlist'));
+        $isOwner = auth()->id() === $wishlist->user_id;
+        $myGroups = $isOwner ? auth()->user()->groups()->get() : collect();
+        $wishlistGroupIds = $isOwner ? $wishlist->groups()->pluck('groups.id')->all() : [];
+
+        return view('wishlists.show', compact('wishlist', 'isOwner', 'myGroups', 'wishlistGroupIds'));
     }
 
     public function update(UpdateWishlistRequest $request, Wishlist $wishlist)
@@ -82,10 +86,18 @@ class WishlistController extends Controller
     {
         $this->authorize('delete', $wishlist);
 
+        $isOwnList = auth()->id() === $wishlist->user_id;
+        $ownerId = $wishlist->user_id;
+
         $wishlist->delete();
 
-        return redirect()->route('wishlists.index')
-            ->with('success', 'Seznam byl smazán.');
+        if ($isOwnList) {
+            return redirect()->route('wishlists.index')
+                ->with('success', 'Seznam byl smazán.');
+        }
+
+        return redirect()->route('admin.users.show', $ownerId)
+            ->with('success', 'Seznam byl jako administrátor trvale smazán.');
     }
 
     public function qrCode(Wishlist $wishlist)

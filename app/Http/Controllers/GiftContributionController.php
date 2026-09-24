@@ -28,6 +28,10 @@ class GiftContributionController extends Controller
             return redirect()->back()->with('error', 'Nemůžete přispívat na dárky ve svém vlastním seznamu.');
         }
 
+        if ($wishlist->is_public) {
+            return redirect()->back()->with('error', 'Tento seznam je veřejný a slouží pouze jako inspirace — rezervace ani příspěvky na dárky zde nejsou povolené.');
+        }
+
         $contributorName = auth()->check() ? auth()->user()->name : null;
         $userId = auth()->check() ? auth()->id() : null;
 
@@ -103,6 +107,10 @@ class GiftContributionController extends Controller
 
         if ($item->wishlist_id !== $wishlist->id || $contribution->gift_item_id !== $item->id || $wishlist->isSuspended()) {
             abort(404);
+        }
+
+        if ($wishlist->is_public) {
+            return redirect()->back()->with('error', 'Tento seznam je veřejný a slouží pouze jako inspirace — rezervace ani příspěvky na dárky zde nejsou povolené.');
         }
 
         $guestToken = session()->get('giftis_guest_token');

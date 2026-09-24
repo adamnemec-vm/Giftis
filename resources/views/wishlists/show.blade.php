@@ -60,6 +60,17 @@
                     <span>Přidat dárek</span>
                 </button>
 
+                @can('delete', $wishlist)
+                    <form method="POST" action="{{ route('wishlists.destroy', $wishlist) }}" onsubmit="return confirm('Opravdu trvale smazat tento seznam přání a všechny jeho položky? Tuto akci nelze vrátit zpět.');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="w-full inline-flex items-center justify-center gap-1.5 bg-rose-50 hover:bg-rose-100 border border-rose-300 text-rose-700 font-semibold px-3 py-2.5 rounded-2xl text-xs transition">
+                            <span>🗑️</span>
+                            <span>Smazat seznam</span>
+                        </button>
+                    </form>
+                @endcan
+
                 @if(auth()->user()->is_admin)
                     @if($wishlist->isSuspended())
                         <form method="POST" action="{{ route('admin.wishlists.unsuspend', $wishlist) }}">
@@ -123,6 +134,35 @@
                 </div>
             </div>
         </div>
+
+        @if($isOwner && $myGroups->isNotEmpty())
+            <div class="bg-white rounded-3xl p-6 md:p-8 border border-[#F0E8DD] shadow-sm">
+                <h2 class="text-lg font-bold text-[#6B1D2F] mb-1 flex items-center gap-2">
+                    <span>👨‍👩‍👧‍👦</span> Sdílet se skupinami
+                </h2>
+                <p class="text-xs text-gray-500 mb-4">
+                    Vyberte skupiny, jejichž členové uvidí tento seznam a budou moci rezervovat dárky. Ostatní skupiny ho neuvidí.
+                </p>
+
+                <form method="POST" action="{{ route('wishlists.groups.update', $wishlist) }}" class="space-y-3">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="flex flex-wrap gap-3">
+                        @foreach($myGroups as $group)
+                            <label class="inline-flex items-center gap-2 bg-[#FAF7F2] border border-gray-200 rounded-xl px-3 py-2 text-xs font-medium text-gray-700 cursor-pointer">
+                                <input type="checkbox" name="group_ids[]" value="{{ $group->id }}" @checked(in_array($group->id, $wishlistGroupIds)) class="rounded text-[#6B1D2F] focus:ring-[#6B1D2F] border-gray-300" />
+                                {{ $group->name }}
+                            </label>
+                        @endforeach
+                    </div>
+
+                    <button type="submit" class="bg-[#6B1D2F] hover:bg-[#541523] text-white font-semibold text-xs py-2.5 px-4 rounded-xl transition">
+                        Uložit sdílení
+                    </button>
+                </form>
+            </div>
+        @endif
 
         <!-- Mřížka dárků -->
         <div>
@@ -548,10 +588,11 @@
                     <x-input-error :messages="$errors->updateWishlist->get('description')" class="mt-1" />
                 </div>
 
-                <div class="flex items-center gap-2 pt-2">
-                    <input type="checkbox" id="edit_is_public" name="is_public" value="1" @checked(old('is_public', $wishlist->is_public)) class="rounded text-[#6B1D2F] focus:ring-[#6B1D2F] border-gray-300" />
+                <div class="flex items-start gap-2 pt-2">
+                    <input type="checkbox" id="edit_is_public" name="is_public" value="1" @checked(old('is_public', $wishlist->is_public)) class="rounded text-[#6B1D2F] focus:ring-[#6B1D2F] border-gray-300 mt-0.5" />
                     <label for="edit_is_public" class="text-xs text-gray-600 font-medium">
-                        Povolit zobrazení v přehledu veřejných wishlistů (ostatní budou moci vidět přání)
+                        Zobrazit seznam veřejně v přehledu ostatním uživatelům (bude sloužit jen jako inspirace)
+                        <span class="block text-[11px] text-gray-400 font-normal mt-0.5">Pozor: u veřejného seznamu nejde rezervovat žádný dárek. Pokud chcete, aby lidé mohli dárky rezervovat, nechte tuto volbu nezaškrtnutou a odkaz na seznam jim pošlete přímo.</span>
                     </label>
                 </div>
             </div>

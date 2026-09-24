@@ -194,4 +194,22 @@ class GiftContributionTest extends TestCase
         $response->assertSessionHas('error');
         $this->assertDatabaseHas('gift_contributions', ['id' => $contribution->id]);
     }
+
+    public function test_cannot_contribute_to_a_group_gift_on_a_public_wishlist(): void
+    {
+        $owner = User::factory()->create();
+        $wishlist = Wishlist::factory()->for($owner)->public()->create();
+        $item = GiftItem::factory()->for($wishlist)->create([
+            'is_group_gift' => true,
+            'price' => 1000,
+        ]);
+
+        $response = $this->post(
+            route('gift-contributions.store', [$wishlist->share_code, $item]),
+            ['amount' => 300, 'contributor_name' => 'Teta Alena']
+        );
+
+        $response->assertSessionHas('error');
+        $this->assertSame(0.0, $item->refresh()->contributed_total);
+    }
 }

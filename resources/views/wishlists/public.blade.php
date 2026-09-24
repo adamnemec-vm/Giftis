@@ -53,6 +53,13 @@
             </div>
         @endif
 
+        @if ($wishlist->is_public)
+            <div class="bg-sky-50 border border-sky-200 text-sky-900 px-6 py-4 rounded-2xl flex items-center gap-3 shadow-sm">
+                <span class="text-2xl">💡</span>
+                <div class="font-medium text-sm">Tento seznam je veřejný a slouží jen jako inspirace — dárky si zde nelze rezervovat. Pokud chcete autorovi něco koupit, domluvte se s ním přímo.</div>
+            </div>
+        @endif
+
         @if (session('manage_link'))
             <div class="bg-amber-50 border border-amber-300 text-amber-900 px-6 py-4 rounded-2xl shadow-sm text-sm space-y-2"
                  x-data="{ copyLink() { navigator.clipboard.writeText('{{ session('manage_link') }}'); alert('Odkaz zkopírován do schránky!'); } }">
@@ -100,10 +107,17 @@
             <!-- Dashboard status & progress -->
             <div class="p-6 md:p-8 bg-[#FAF7F2] border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="space-y-1">
-                    <div class="text-xs uppercase tracking-wider font-semibold text-gray-500">Jak funguje rezervace dárku?</div>
-                    <p class="text-xs text-gray-600 max-w-xl">
-                        Vyberte si ze seznamu dárek, který chcete autorovi koupit, a klikněte na <strong>"Chci koupit / Rezervovat"</strong>. Položka se uzamkne, aby ji nenakupoval nikdo další. Autor uvidí jen to, že dárek dostane, ale <strong>neuvidí Vaše jméno</strong>! 🤫
-                    </p>
+                    @if($wishlist->is_public)
+                        <div class="text-xs uppercase tracking-wider font-semibold text-gray-500">Veřejný seznam přání</div>
+                        <p class="text-xs text-gray-600 max-w-xl">
+                            Tento seznam je veřejně viditelný a slouží pouze jako inspirace — dárky si zde <strong>nelze rezervovat</strong>. Pokud chcete autorovi něco koupit, domluvte se s ním přímo.
+                        </p>
+                    @else
+                        <div class="text-xs uppercase tracking-wider font-semibold text-gray-500">Jak funguje rezervace dárku?</div>
+                        <p class="text-xs text-gray-600 max-w-xl">
+                            Vyberte si ze seznamu dárek, který chcete autorovi koupit, a klikněte na <strong>"Chci koupit / Rezervovat"</strong>. Položka se uzamkne, aby ji nenakupoval nikdo další. Autor uvidí jen to, že dárek dostane, ale <strong>neuvidí Vaše jméno</strong>! 🤫
+                        </p>
+                    @endif
                 </div>
 
                 <!-- Progress bar -->
@@ -246,6 +260,10 @@
                                 @if($isOwner)
                                     <div class="text-center text-xs text-gray-400 font-medium py-1">
                                         Váš vlastní dárek (Náhled pro přátele)
+                                    </div>
+                                @elseif($wishlist->is_public)
+                                    <div class="text-center text-xs text-gray-400 font-medium py-1">
+                                        💡 Veřejný seznam — jen pro inspiraci, rezervace nejsou povolené.
                                     </div>
                                 @elseif($item->is_group_gift)
                                     @if($item->isAvailable())

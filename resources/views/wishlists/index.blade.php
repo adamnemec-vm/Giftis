@@ -124,10 +124,19 @@
                                     <span>Kopírovat odkaz</span>
                                 </button>
                                 
-                                <a href="{{ route('wishlists.show', $wishlist) }}" 
+                                <a href="{{ route('wishlists.show', $wishlist) }}"
                                    class="flex-1 inline-flex items-center justify-center gap-1 bg-[#6B1D2F] hover:bg-[#541523] text-white font-medium text-xs py-2 px-3 rounded-xl transition">
                                     <span>👁️ Otevřít</span>
                                 </a>
+
+                                <form method="POST" action="{{ route('wishlists.destroy', $wishlist) }}" onsubmit="return confirm('Opravdu trvale smazat tento seznam přání a všechny jeho položky? Tuto akci nelze vrátit zpět.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" title="Smazat seznam"
+                                            class="inline-flex items-center justify-center bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-medium text-xs py-2 px-3 rounded-xl transition">
+                                        <span>🗑️</span>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     @endforeach
@@ -244,10 +253,11 @@
                     <x-input-error :messages="$errors->createWishlist->get('description')" class="mt-1" />
                 </div>
 
-                <div class="flex items-center gap-2 pt-2">
-                    <input type="checkbox" id="is_public" name="is_public" value="1" @checked(old('is_public', true)) class="rounded text-[#6B1D2F] focus:ring-[#6B1D2F] border-gray-300" />
+                <div class="flex items-start gap-2 pt-2">
+                    <input type="checkbox" id="is_public" name="is_public" value="1" @checked(old('is_public', false)) class="rounded text-[#6B1D2F] focus:ring-[#6B1D2F] border-gray-300 mt-0.5" />
                     <label for="is_public" class="text-xs text-gray-600 font-medium">
-                        Povolit zobrazení v přehledu veřejných wishlistů (ostatní budou moci vidět přání)
+                        Zobrazit seznam veřejně v přehledu ostatním uživatelům (bude sloužit jen jako inspirace)
+                        <span class="block text-[11px] text-gray-400 font-normal mt-0.5">Pozor: u veřejného seznamu nejde rezervovat žádný dárek. Pokud chcete, aby lidé mohli dárky rezervovat, nechte tuto volbu nezaškrtnutou a odkaz na seznam jim pošlete přímo.</span>
                     </label>
                 </div>
             </div>

@@ -189,4 +189,34 @@ class PublicWishlistReservationTest extends TestCase
 
         $response->assertNotFound();
     }
+
+    public function test_gifts_cannot_be_reserved_on_a_public_wishlist(): void
+    {
+        $owner = User::factory()->create();
+        $wishlist = Wishlist::factory()->for($owner)->public()->create();
+        $item = GiftItem::factory()->for($wishlist)->create();
+
+        $response = $this->post(
+            route('public.wishlists.reserve', [$wishlist->share_code, $item]),
+            ['buyer_name' => 'Cizí člověk']
+        );
+
+        $response->assertSessionHas('error');
+        $this->assertSame('available', $item->refresh()->status);
+    }
+
+    public function test_an_existing_reservation_cannot_be_cancelled_on_a_public_wishlist(): void
+    {
+        $owner = User::factory()->create();
+        $wishlist = Wishlist::factory()->for($owner)->public()->create();
+        $item = GiftItem::factory()->for($wishlist)->reserved()->create([
+            'reservation_token' => 'guest-token',
+        ]);
+
+        $this->withSession(['giftis_guest_token' => 'guest-token']);
+        $response = $this->post(route('public.wishlists.unreserve', [$wishlist->share_code, $item]));
+
+        $response->assertSessionHas('error');
+        $this->assertSame('reserved', $item->refresh()->status);
+    }
 }
