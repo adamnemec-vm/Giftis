@@ -47,6 +47,11 @@ class GiftItem extends Model
         return $this->hasMany(GiftContribution::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(GiftItemComment::class)->orderBy('created_at');
+    }
+
     public function isReserved(): bool
     {
         return $this->status === 'reserved';
@@ -104,5 +109,18 @@ class GiftItem extends Model
         }
 
         return max(0, (float) $this->price - $this->contributed_total);
+    }
+
+    public function getSuggestedBuyerAttribute(): ?GiftContribution
+    {
+        return $this->contributions->sortBy('created_at')->first();
+    }
+
+    public function isContributor(?int $userId, ?string $guestToken): bool
+    {
+        return $this->contributions->contains(function (GiftContribution $contribution) use ($userId, $guestToken) {
+            return ($userId && $contribution->contributor_user_id === $userId)
+                || ($guestToken && $contribution->contribution_token === $guestToken);
+        });
     }
 }

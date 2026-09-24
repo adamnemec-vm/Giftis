@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ImpersonationController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\WishlistController as AdminWishlistController;
 use App\Http\Controllers\GiftContributionController;
+use App\Http\Controllers\GiftItemCommentController;
 use App\Http\Controllers\GiftItemController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GroupInvitationController;
@@ -40,6 +41,9 @@ Route::post('/s/{share_code}/items/{item}/contributions', [GiftContributionContr
 Route::delete('/s/{share_code}/items/{item}/contributions/{contribution}', [GiftContributionController::class, 'destroy'])
     ->middleware('throttle:20,1')
     ->name('gift-contributions.destroy');
+Route::post('/s/{share_code}/items/{item}/comments', [GiftItemCommentController::class, 'store'])
+    ->middleware('throttle:20,1')
+    ->name('gift-item-comments.store');
 Route::get('/s/{share_code}/manage/{token}', [PublicWishlistController::class, 'restoreSession'])
     ->middleware('throttle:20,1')
     ->name('public.wishlists.restore-session');

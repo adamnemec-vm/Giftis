@@ -14,7 +14,7 @@ class PublicWishlistController extends Controller
 {
     public function show(Request $request, string $share_code)
     {
-        $wishlist = Wishlist::with(['user', 'items.contributions'])->where('share_code', $share_code)->firstOrFail();
+        $wishlist = Wishlist::with(['user', 'items.contributions.contributor', 'items.comments'])->where('share_code', $share_code)->firstOrFail();
 
         if ($wishlist->isSuspended()) {
             abort(404);

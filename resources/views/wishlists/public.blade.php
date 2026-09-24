@@ -296,6 +296,46 @@
                                             <span>Přátelé už na dárek vybrali celou částku</span>
                                         </button>
                                     @endif
+
+                                    @if($myContributions->isNotEmpty())
+                                        @php
+                                            $suggestedBuyer = $item->suggested_buyer;
+                                            $isSuggestedBuyerMe = $suggestedBuyer && (
+                                                (auth()->check() && $suggestedBuyer->contributor_user_id === auth()->id())
+                                                || ($guestToken && $suggestedBuyer->contribution_token === $guestToken)
+                                            );
+                                        @endphp
+                                        <div class="mt-3 pt-3 border-t border-gray-200 space-y-2" x-data="{ showThread: false }">
+                                            @if($suggestedBuyer)
+                                                <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[11px] text-amber-900">
+                                                    <div class="font-bold">🛒 Navrhovaný kupující: {{ $isSuggestedBuyerMe ? 'Vy' : ($suggestedBuyer->contributor_user_id ? $suggestedBuyer->contributor->name : $suggestedBuyer->contributor_name) }}</div>
+                                                    <p class="mt-1">Domluvte se s ostatními přispěvateli v diskuzi níže, kdo dárek reálně koupí a jak si mezi sebou vyrovnáte peníze.</p>
+                                                </div>
+                                            @endif
+
+                                            <button type="button" @click="showThread = ! showThread" class="w-full text-center text-xs font-semibold text-[#6B1D2F] underline py-1">
+                                                💬 Diskuze mezi přispěvateli ({{ $item->comments->count() }})
+                                            </button>
+
+                                            <div x-show="showThread" class="space-y-2">
+                                                @forelse($item->comments as $comment)
+                                                    <div class="bg-white border border-gray-200 rounded-xl p-2.5 text-xs">
+                                                        <div class="font-semibold text-gray-700">{{ $comment->author_name }}</div>
+                                                        <div class="text-gray-600 break-words">{{ $comment->body }}</div>
+                                                        <div class="text-[10px] text-gray-400 mt-1">{{ $comment->created_at->diffForHumans() }}</div>
+                                                    </div>
+                                                @empty
+                                                    <p class="text-[11px] text-gray-400 text-center">Zatím žádné zprávy. Napište první!</p>
+                                                @endforelse
+
+                                                <form method="POST" action="{{ route('gift-item-comments.store', ['share_code' => $wishlist->share_code, 'item' => $item]) }}" class="flex gap-2 pt-1">
+                                                    @csrf
+                                                    <input type="text" name="body" maxlength="1000" required placeholder="Napsat zprávu…" class="flex-1 rounded-xl border-gray-300 text-xs focus:border-[#6B1D2F] focus:ring-[#6B1D2F]" />
+                                                    <button type="submit" class="shrink-0 bg-[#6B1D2F] hover:bg-[#541523] text-white text-xs font-semibold px-3 rounded-xl transition">Odeslat</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    @endif
                                 @elseif($item->isAvailable())
                                     <button @click="activeItem = {{ json_encode($item) }}; $dispatch('open-modal', 'reserve-gift-modal')"
                                             class="w-full inline-flex items-center justify-center gap-2 bg-[#6B1D2F] hover:bg-[#541523] text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md transition transform active:scale-95">
