@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#FAF7F2"/>
+  <circle cx="100" cy="92" r="62" fill="#F3E1B5"/>
+  <text x="100" y="118" font-size="72" text-anchor="middle">🎧</text>
+</svg>

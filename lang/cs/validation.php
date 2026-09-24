@@ -1,0 +1,196 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Validation Language Lines
+    |--------------------------------------------------------------------------
+    */
+
+    'accepted' => 'Pole :attribute musí být přijato.',
+    'accepted_if' => 'Pole :attribute musí být přijato, pokud :other je :value.',
+    'active_url' => 'Pole :attribute musí být platná URL adresa.',
+    'after' => 'Pole :attribute musí obsahovat datum po :date.',
+    'after_or_equal' => 'Pole :attribute musí obsahovat datum po :date nebo shodné.',
+    'alpha' => 'Pole :attribute může obsahovat pouze písmena.',
+    'alpha_dash' => 'Pole :attribute může obsahovat pouze písmena, čísla, pomlčky a podtržítka.',
+    'alpha_num' => 'Pole :attribute může obsahovat pouze písmena a čísla.',
+    'array' => 'Pole :attribute musí být pole.',
+    'ascii' => 'Pole :attribute může obsahovat pouze jednobajtové alfanumerické znaky a symboly.',
+    'before' => 'Pole :attribute musí obsahovat datum před :date.',
+    'before_or_equal' => 'Pole :attribute musí obsahovat datum před :date nebo shodné.',
+    'between' => [
+        'array' => 'Pole :attribute musí obsahovat mezi :min a :max prvky.',
+        'file' => 'Pole :attribute musí mít velikost mezi :min a :max kilobajty.',
+        'numeric' => 'Pole :attribute musí mít hodnotu mezi :min a :max.',
+        'string' => 'Pole :attribute musí obsahovat mezi :min a :max znaky.',
+    ],
+    'boolean' => 'Pole :attribute musí mít hodnotu true nebo false.',
+    'confirmed' => 'Potvrzení pole :attribute se neshoduje.',
+    'current_password' => 'Heslo je nesprávné.',
+    'date' => 'Pole :attribute musí obsahovat platné datum.',
+    'date_equals' => 'Pole :attribute musí obsahovat datum rovné datu :date.',
+    'date_format' => 'Pole :attribute musí odpovídat formátu :format.',
+    'decimal' => 'Pole :attribute musí mít :decimal desetinných míst.',
+    'declined' => 'Pole :attribute musí být odmítnuto.',
+    'declined_if' => 'Pole :attribute musí být odmítnuto, pokud :other je :value.',
+    'different' => 'Pole :attribute a :other se musí lišit.',
+    'digits' => 'Pole :attribute musí mít :digits číslic.',
+    'digits_between' => 'Pole :attribute musí mít mezi :min a :max číslicemi.',
+    'dimensions' => 'Pole :attribute má neplatné rozměry obrázku.',
+    'distinct' => 'Pole :attribute obsahuje duplicitní hodnotu.',
+    'doesnt_end_with' => 'Pole :attribute nesmí končit jedním z následujících: :values.',
+    'doesnt_start_with' => 'Pole :attribute nesmí začínat jedním z následujících: :values.',
+    'email' => 'Pole :attribute musí obsahovat platnou e-mailovou adresu.',
+    'ends_with' => 'Pole :attribute musí končit jedním z následujících: :values.',
+    'enum' => 'Vybraná hodnota pole :attribute je neplatná.',
+    'exists' => 'Vybraná hodnota pole :attribute je neplatná.',
+    'extensions' => 'Pole :attribute musí mít jednu z následujících přípon: :values.',
+    'file' => 'Pole :attribute musí být soubor.',
+    'filled' => 'Pole :attribute musí mít hodnotu.',
+    'gt' => [
+        'array' => 'Pole :attribute musí obsahovat více než :value prvků.',
+        'file' => 'Pole :attribute musí mít velikost větší než :value kilobajtů.',
+        'numeric' => 'Pole :attribute musí mít hodnotu větší než :value.',
+        'string' => 'Pole :attribute musí obsahovat více než :value znaků.',
+    ],
+    'gte' => [
+        'array' => 'Pole :attribute musí obsahovat :value prvků nebo více.',
+        'file' => 'Pole :attribute musí mít velikost větší nebo rovnou :value kilobajtům.',
+        'numeric' => 'Pole :attribute musí mít hodnotu větší nebo rovnou :value.',
+        'string' => 'Pole :attribute musí obsahovat více znaků nebo stejný počet znaků jako :value.',
+    ],
+    'hex_color' => 'Pole :attribute musí obsahovat platnou hexadecimální barvu.',
+    'image' => 'Pole :attribute musí být obrázek.',
+    'in' => 'Vybraná hodnota pole :attribute je neplatná.',
+    'in_array' => 'Pole :attribute musí existovat v :other.',
+    'integer' => 'Pole :attribute musí být celé číslo.',
+    'ip' => 'Pole :attribute musí obsahovat platnou IP adresu.',
+    'ipv4' => 'Pole :attribute musí obsahovat platnou IPv4 adresu.',
+    'ipv6' => 'Pole :attribute musí obsahovat platnou IPv6 adresu.',
+    'json' => 'Pole :attribute musí obsahovat platný JSON řetězec.',
+    'lowercase' => 'Pole :attribute musí obsahovat pouze malá písmena.',
+    'lt' => [
+        'array' => 'Pole :attribute musí obsahovat méně než :value prvků.',
+        'file' => 'Pole :attribute musí mít velikost menší než :value kilobajtů.',
+        'numeric' => 'Pole :attribute musí mít hodnotu menší než :value.',
+        'string' => 'Pole :attribute musí obsahovat méně než :value znaků.',
+    ],
+    'lte' => [
+        'array' => 'Pole :attribute nesmí obsahovat více než :value prvků.',
+        'file' => 'Pole :attribute musí mít velikost menší nebo rovnou :value kilobajtům.',
+        'numeric' => 'Pole :attribute musí mít hodnotu menší nebo rovnou :value.',
+        'string' => 'Pole :attribute musí obsahovat méně znaků nebo stejný počet znaků jako :value.',
+    ],
+    'mac_address' => 'Pole :attribute musí obsahovat platnou MAC adresu.',
+    'max' => [
+        'array' => 'Pole :attribute nesmí obsahovat více než :max prvků.',
+        'file' => 'Pole :attribute nesmí být větší než :max kilobajtů.',
+        'numeric' => 'Pole :attribute nesmí být větší než :max.',
+        'string' => 'Pole :attribute nesmí obsahovat více než :max znaků.',
+    ],
+    'max_digits' => 'Pole :attribute nesmí mít více než :max číslic.',
+    'mimes' => 'Pole :attribute musí být soubor typu: :values.',
+    'mimetypes' => 'Pole :attribute musí být soubor typu: :values.',
+    'min' => [
+        'array' => 'Pole :attribute musí obsahovat alespoň :min prvky.',
+        'file' => 'Pole :attribute musí mít velikost alespoň :min kilobajtů.',
+        'numeric' => 'Pole :attribute musí mít hodnotu alespoň :min.',
+        'string' => 'Pole :attribute musí obsahovat alespoň :min znaků.',
+    ],
+    'min_digits' => 'Pole :attribute musí mít alespoň :min číslic.',
+    'missing' => 'Pole :attribute musí chybět.',
+    'missing_if' => 'Pole :attribute musí chybět, pokud :other je :value.',
+    'missing_unless' => 'Pole :attribute musí chybět, dokud :other není :value.',
+    'missing_with' => 'Pole :attribute musí chybět, pokud je přítomno :values.',
+    'missing_with_all' => 'Pole :attribute musí chybět, pokud jsou přítomna :values.',
+    'multiple_of' => 'Pole :attribute musí být násobkem :value.',
+    'not_in' => 'Vybraná hodnota pole :attribute je neplatná.',
+    'not_regex' => 'Formát pole :attribute je neplatný.',
+    'numeric' => 'Pole :attribute musí být číslo.',
+    'password' => [
+        'letters' => 'Pole :attribute musí obsahovat alespoň jedno písmeno.',
+        'mixed' => 'Pole :attribute musí obsahovat alespoň jedno velké a jedno malé písmeno.',
+        'numbers' => 'Pole :attribute musí obsahovat alespoň jednu číslici.',
+        'symbols' => 'Pole :attribute musí obsahovat alespoň jeden speciální znak.',
+        'uncompromised' => 'Zadané pole :attribute se objevilo v úniku dat. Zvolte prosím jiné.',
+    ],
+    'present' => 'Pole :attribute musí být přítomno.',
+    'present_if' => 'Pole :attribute musí být přítomno, pokud :other je :value.',
+    'present_unless' => 'Pole :attribute musí být přítomno, dokud :other není :value.',
+    'present_with' => 'Pole :attribute musí být přítomno, pokud je přítomno :values.',
+    'present_with_all' => 'Pole :attribute musí být přítomno, pokud jsou přítomna :values.',
+    'prohibited' => 'Pole :attribute je zakázáno.',
+    'prohibited_if' => 'Pole :attribute je zakázáno, pokud :other je :value.',
+    'prohibited_unless' => 'Pole :attribute je zakázáno, dokud :other není v :values.',
+    'prohibits' => 'Pole :attribute zakazuje přítomnost pole :other.',
+    'regex' => 'Formát pole :attribute je neplatný.',
+    'required' => 'Pole :attribute je povinné.',
+    'required_array_keys' => 'Pole :attribute musí obsahovat položky pro: :values.',
+    'required_if' => 'Pole :attribute je povinné, pokud :other je :value.',
+    'required_if_accepted' => 'Pole :attribute je povinné, pokud je :other přijato.',
+    'required_unless' => 'Pole :attribute je povinné, dokud :other není v :values.',
+    'required_with' => 'Pole :attribute je povinné, pokud je přítomno :values.',
+    'required_with_all' => 'Pole :attribute je povinné, pokud jsou přítomna :values.',
+    'required_without' => 'Pole :attribute je povinné, pokud není přítomno :values.',
+    'required_without_all' => 'Pole :attribute je povinné, pokud není přítomno žádné z :values.',
+    'same' => 'Pole :attribute a :other se musí shodovat.',
+    'size' => [
+        'array' => 'Pole :attribute musí obsahovat :size prvků.',
+        'file' => 'Pole :attribute musí mít velikost :size kilobajtů.',
+        'numeric' => 'Pole :attribute musí mít hodnotu :size.',
+        'string' => 'Pole :attribute musí obsahovat :size znaků.',
+    ],
+    'starts_with' => 'Pole :attribute musí začínat jedním z následujících: :values.',
+    'string' => 'Pole :attribute musí být řetězec.',
+    'timezone' => 'Pole :attribute musí obsahovat platné časové pásmo.',
+    'unique' => 'Zadaná hodnota pole :attribute je již použita.',
+    'uploaded' => 'Nahrání pole :attribute se nezdařilo.',
+    'uppercase' => 'Pole :attribute musí obsahovat pouze velká písmena.',
+    'url' => 'Pole :attribute musí být platná URL adresa (např. musí začínat https://).',
+    'ulid' => 'Pole :attribute musí být platný ULID.',
+    'uuid' => 'Pole :attribute musí být platné UUID.',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Validation Language Lines
+    |--------------------------------------------------------------------------
+    */
+
+    'custom' => [
+        // 'attribute-name' => [
+        //     'rule-name' => 'custom-message',
+        // ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Validation Attributes
+    |--------------------------------------------------------------------------
+    */
+
+    'attributes' => [
+        'name' => 'jméno',
+        'email' => 'e-mail',
+        'password' => 'heslo',
+        'password_confirmation' => 'potvrzení hesla',
+        'title' => 'název',
+        'description' => 'popis',
+        'occasion' => 'příležitost',
+        'event_date' => 'datum události',
+        'is_public' => 'veřejná viditelnost',
+        'url' => 'odkaz',
+        'price' => 'cena',
+        'currency' => 'měna',
+        'priority' => 'priorita',
+        'image' => 'obrázek',
+        'image_url' => 'odkaz na obrázek',
+        'is_group_gift' => 'skupinový dárek',
+        'is_admin' => 'administrátorská práva',
+        'contributor_name' => 'jméno přispěvatele',
+        'amount' => 'částka',
+        'reserved_by_name' => 'jméno rezervujícího',
+    ],
+
+];
