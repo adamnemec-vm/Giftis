@@ -17,15 +17,6 @@ class WishlistController extends Controller
         $user = auth()->user();
         $myWishlists = $user->wishlists()->with('items')->latest()->get();
 
-        // Ostatní veřejné wishlisty od jiných uživatelů pro inspiraci/přehled
-        $publicWishlists = Wishlist::with(['user', 'items'])
-            ->where('user_id', '!=', $user->id)
-            ->where('is_public', true)
-            ->whereNull('suspended_at')
-            ->latest()
-            ->take(6)
-            ->get();
-
         // Seznamy ostatních členů skupin, které zpřístupnili konkrétně nám
         $myGroupIds = $user->groups()->pluck('groups.id');
         $groupWishlists = Wishlist::with(['user', 'items', 'groups' => function ($query) use ($myGroupIds) {
@@ -37,7 +28,7 @@ class WishlistController extends Controller
             ->latest()
             ->get();
 
-        return view('wishlists.index', compact('myWishlists', 'publicWishlists', 'groupWishlists'));
+        return view('wishlists.index', compact('myWishlists', 'groupWishlists'));
     }
 
     public function store(StoreWishlistRequest $request)
@@ -55,7 +46,6 @@ class WishlistController extends Controller
             'occasion' => $validated['occasion'],
             'event_date' => $validated['event_date'] ?? null,
             'share_code' => $shareCode,
-            'is_public' => $request->boolean('is_public'),
         ]);
 
         return redirect()->route('wishlists.show', $wishlist)
@@ -86,7 +76,6 @@ class WishlistController extends Controller
             'description' => $validated['description'] ?? null,
             'occasion' => $validated['occasion'],
             'event_date' => $validated['event_date'] ?? null,
-            'is_public' => $request->boolean('is_public'),
         ]);
 
         return redirect()->route('wishlists.show', $wishlist)

@@ -18,14 +18,12 @@ class WishlistTest extends TestCase
         $response = $this->actingAs($user)->post('/wishlists', [
             'title' => 'Vánoční přání',
             'occasion' => 'christmas',
-            'is_public' => '1',
         ]);
 
         $wishlist = Wishlist::first();
 
         $response->assertRedirect(route('wishlists.show', $wishlist));
         $this->assertSame($user->id, $wishlist->user_id);
-        $this->assertTrue($wishlist->is_public);
         $this->assertNotEmpty($wishlist->share_code);
     }
 
@@ -43,19 +41,9 @@ class WishlistTest extends TestCase
         $this->assertDatabaseMissing('wishlists', ['user_id' => $user->id]);
     }
 
-    public function test_unchecking_is_public_on_create_is_respected(): void
+    public function test_the_wishlist_schema_has_no_public_flag_anymore(): void
     {
-        $user = User::factory()->create();
-
-        // Unchecked checkboxes are simply omitted from the submitted form data.
-        $this->actingAs($user)->post('/wishlists', [
-            'title' => 'Soukromé přání',
-            'occasion' => 'birthday',
-        ]);
-
-        $wishlist = Wishlist::first();
-
-        $this->assertFalse($wishlist->is_public);
+        $this->assertFalse(\Illuminate\Support\Facades\Schema::hasColumn('wishlists', 'is_public'));
     }
 
     public function test_owner_can_view_their_own_wishlist(): void
@@ -82,7 +70,7 @@ class WishlistTest extends TestCase
     public function test_owner_can_update_their_wishlist(): void
     {
         $user = User::factory()->create();
-        $wishlist = Wishlist::factory()->for($user)->create(['is_public' => true]);
+        $wishlist = Wishlist::factory()->for($user)->create();
 
         $response = $this->actingAs($user)->put(route('wishlists.update', $wishlist), [
             'title' => 'Nový název',
@@ -91,7 +79,6 @@ class WishlistTest extends TestCase
 
         $response->assertRedirect(route('wishlists.show', $wishlist));
         $this->assertSame('Nový název', $wishlist->refresh()->title);
-        $this->assertFalse($wishlist->is_public);
     }
 
     public function test_other_users_cannot_update_someone_elses_wishlist(): void

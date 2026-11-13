@@ -140,22 +140,15 @@
                                     @endif
                                 </div>
                                 <h3 class="text-lg font-bold text-gray-900 font-serif mb-1">{{ $wishlist->title }}</h3>
-                                @if($wishlist->is_public)
-                                    <div class="mt-4 bg-sky-50 border border-sky-200 text-sky-900 text-[11px] rounded-xl px-3 py-2 flex items-center gap-2">
-                                        <span>💡</span>
-                                        <span>Veřejný seznam — jen inspirace, bez rezervací</span>
+                                <div class="mt-4">
+                                    <div class="flex justify-between items-center text-xs text-gray-600 mb-1">
+                                        <span>Rezervováno dárků</span>
+                                        <span class="font-bold text-[#6B1D2F]">{{ $wishlist->progress_percentage }}%</span>
                                     </div>
-                                @else
-                                    <div class="mt-4">
-                                        <div class="flex justify-between items-center text-xs text-gray-600 mb-1">
-                                            <span>Rezervováno dárků</span>
-                                            <span class="font-bold text-[#6B1D2F]">{{ $wishlist->progress_percentage }}%</span>
-                                        </div>
-                                        <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                                            <div class="bg-[#D4AF37] h-full rounded-full" style="width: {{ $wishlist->progress_percentage }}%"></div>
-                                        </div>
+                                    <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                                        <div class="bg-[#D4AF37] h-full rounded-full" style="width: {{ $wishlist->progress_percentage }}%"></div>
                                     </div>
-                                @endif
+                                </div>
                             </div>
                             <div class="mt-6 pt-4 border-t border-gray-100">
                                 @if($isMyWishlist)

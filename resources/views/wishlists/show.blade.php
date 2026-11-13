@@ -587,14 +587,6 @@
                     <textarea id="edit_description" name="description" rows="3" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-[#6B1D2F] focus:ring-[#6B1D2F]">{{ old('description', $wishlist->description) }}</textarea>
                     <x-input-error :messages="$errors->updateWishlist->get('description')" class="mt-1" />
                 </div>
-
-                <div class="flex items-start gap-2 pt-2">
-                    <input type="checkbox" id="edit_is_public" name="is_public" value="1" @checked(old('is_public', $wishlist->is_public)) class="rounded text-[#6B1D2F] focus:ring-[#6B1D2F] border-gray-300 mt-0.5" />
-                    <label for="edit_is_public" class="text-xs text-gray-600 font-medium">
-                        Zobrazit seznam veřejně v přehledu ostatním uživatelům (bude sloužit jen jako inspirace)
-                        <span class="block text-[11px] text-gray-400 font-normal mt-0.5">Pozor: u veřejného seznamu nejde rezervovat žádný dárek. Pokud chcete, aby lidé mohli dárky rezervovat, nechte tuto volbu nezaškrtnutou a odkaz na seznam jim pošlete přímo.</span>
-                    </label>
-                </div>
             </div>
 
             <div class="mt-6 flex justify-end gap-3 pt-4 border-t border-gray-100">

@@ -53,13 +53,6 @@
             </div>
         @endif
 
-        @if ($wishlist->is_public)
-            <div class="bg-sky-50 border border-sky-200 text-sky-900 px-6 py-4 rounded-2xl flex items-center gap-3 shadow-sm">
-                <span class="text-2xl">💡</span>
-                <div class="font-medium text-sm">Tento seznam je veřejný a slouží jen jako inspirace — dárky si zde nelze rezervovat. Pokud chcete autorovi něco koupit, domluvte se s ním přímo.</div>
-            </div>
-        @endif
-
         @if (session('manage_link'))
             <div class="bg-amber-50 border border-amber-300 text-amber-900 px-6 py-4 rounded-2xl shadow-sm text-sm space-y-2"
                  x-data="{ copyLink() { navigator.clipboard.writeText('{{ session('manage_link') }}'); alert('Odkaz zkopírován do schránky!'); } }">
@@ -107,34 +100,25 @@
             <!-- Dashboard status & progress -->
             <div class="p-6 md:p-8 bg-[#FAF7F2] border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="space-y-1">
-                    @if($wishlist->is_public)
-                        <div class="text-xs uppercase tracking-wider font-semibold text-gray-500">Veřejný seznam přání</div>
-                        <p class="text-xs text-gray-600 max-w-xl">
-                            Tento seznam je veřejně viditelný a slouží pouze jako inspirace — dárky si zde <strong>nelze rezervovat</strong>. Pokud chcete autorovi něco koupit, domluvte se s ním přímo.
-                        </p>
-                    @else
-                        <div class="text-xs uppercase tracking-wider font-semibold text-gray-500">Jak funguje rezervace dárku?</div>
-                        <p class="text-xs text-gray-600 max-w-xl">
-                            Vyberte si ze seznamu dárek, který chcete autorovi koupit, a klikněte na <strong>"Chci koupit / Rezervovat"</strong>. Položka se uzamkne, aby ji nenakupoval nikdo další. Autor uvidí jen to, že dárek dostane, ale <strong>neuvidí Vaše jméno</strong>! 🤫
-                        </p>
-                    @endif
+                    <div class="text-xs uppercase tracking-wider font-semibold text-gray-500">Jak funguje rezervace dárku?</div>
+                    <p class="text-xs text-gray-600 max-w-xl">
+                        Vyberte si ze seznamu dárek, který chcete autorovi koupit, a klikněte na <strong>"Chci koupit / Rezervovat"</strong>. Položka se uzamkne, aby ji nenakupoval nikdo další. Autor uvidí jen to, že dárek dostane, ale <strong>neuvidí Vaše jméno</strong>! 🤫
+                    </p>
                 </div>
 
-                @unless($wishlist->is_public)
-                    <!-- Progress bar -->
-                    <div class="w-full md:w-72 shrink-0 bg-white p-4 rounded-2xl border border-gray-200">
-                        <div class="flex justify-between items-center text-xs font-bold text-[#6B1D2F] mb-1.5">
-                            <span>Stav rezervovaných dárků</span>
-                            <span>{{ $wishlist->progress_percentage }}%</span>
-                        </div>
-                        <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden p-0.5 border border-gray-200">
-                            <div class="bg-[#D4AF37] h-full rounded-full transition-all duration-500" style="width: {{ $wishlist->progress_percentage }}%"></div>
-                        </div>
-                        <div class="text-[11px] text-gray-500 text-center mt-2 font-medium">
-                            {{ $wishlist->reserved_count }} z {{ $wishlist->total_count }} dárků již někdo vybral
-                        </div>
+                <!-- Progress bar -->
+                <div class="w-full md:w-72 shrink-0 bg-white p-4 rounded-2xl border border-gray-200">
+                    <div class="flex justify-between items-center text-xs font-bold text-[#6B1D2F] mb-1.5">
+                        <span>Stav rezervovaných dárků</span>
+                        <span>{{ $wishlist->progress_percentage }}%</span>
                     </div>
-                @endunless
+                    <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden p-0.5 border border-gray-200">
+                        <div class="bg-[#D4AF37] h-full rounded-full transition-all duration-500" style="width: {{ $wishlist->progress_percentage }}%"></div>
+                    </div>
+                    <div class="text-[11px] text-gray-500 text-center mt-2 font-medium">
+                        {{ $wishlist->reserved_count }} z {{ $wishlist->total_count }} dárků již někdo vybral
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -195,23 +179,21 @@
                                 @endif
 
                                 <!-- Status Badge -->
-                                @unless($wishlist->is_public)
-                                    <div class="absolute top-3 right-3">
-                                        @if($item->isAvailable())
-                                            <span class="bg-emerald-500 text-white font-bold text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1">
-                                                <span>✨</span> Volné k rezervaci
-                                            </span>
-                                        @elseif($isMyReservation)
-                                            <span class="bg-[#D4AF37] text-gray-900 font-bold text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1">
-                                                <span>✅</span> Vybrali jste vy
-                                            </span>
-                                        @else
-                                            <span class="bg-gray-700 text-white font-bold text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1">
-                                                <span>🔒</span> Rezervováno
-                                            </span>
-                                        @endif
-                                    </div>
-                                @endunless
+                                <div class="absolute top-3 right-3">
+                                    @if($item->isAvailable())
+                                        <span class="bg-emerald-500 text-white font-bold text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1">
+                                            <span>✨</span> Volné k rezervaci
+                                        </span>
+                                    @elseif($isMyReservation)
+                                        <span class="bg-[#D4AF37] text-gray-900 font-bold text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1">
+                                            <span>✅</span> Vybrali jste vy
+                                        </span>
+                                    @else
+                                        <span class="bg-gray-700 text-white font-bold text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1">
+                                            <span>🔒</span> Rezervováno
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
 
                             <!-- Detail dárku -->
@@ -241,7 +223,7 @@
                                     </div>
                                 @endif
 
-                                @if($item->is_group_gift && $item->price && ! $wishlist->is_public)
+                                @if($item->is_group_gift && $item->price)
                                     <div class="pt-2">
                                         <div class="flex justify-between items-center text-[11px] font-bold text-[#6B1D2F] mb-1">
                                             <span>Vybráno na dárek</span>
@@ -264,10 +246,6 @@
                                 @if($isOwner)
                                     <div class="text-center text-xs text-gray-400 font-medium py-1">
                                         Váš vlastní dárek (Náhled pro přátele)
-                                    </div>
-                                @elseif($wishlist->is_public)
-                                    <div class="text-center text-xs text-gray-400 font-medium py-1">
-                                        💡 Veřejný seznam — jen pro inspiraci, rezervace nejsou povolené.
                                     </div>
                                 @elseif($item->is_group_gift)
                                     @if($item->isAvailable())

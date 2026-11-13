@@ -190,50 +190,7 @@ class PublicWishlistReservationTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function test_gifts_cannot_be_reserved_on_a_public_wishlist(): void
-    {
-        $owner = User::factory()->create();
-        $wishlist = Wishlist::factory()->for($owner)->public()->create();
-        $item = GiftItem::factory()->for($wishlist)->create();
-
-        $response = $this->post(
-            route('public.wishlists.reserve', [$wishlist->share_code, $item]),
-            ['buyer_name' => 'Cizí člověk']
-        );
-
-        $response->assertSessionHas('error');
-        $this->assertSame('available', $item->refresh()->status);
-    }
-
-    public function test_an_existing_reservation_cannot_be_cancelled_on_a_public_wishlist(): void
-    {
-        $owner = User::factory()->create();
-        $wishlist = Wishlist::factory()->for($owner)->public()->create();
-        $item = GiftItem::factory()->for($wishlist)->reserved()->create([
-            'reservation_token' => 'guest-token',
-        ]);
-
-        $this->withSession(['giftis_guest_token' => 'guest-token']);
-        $response = $this->post(route('public.wishlists.unreserve', [$wishlist->share_code, $item]));
-
-        $response->assertSessionHas('error');
-        $this->assertSame('reserved', $item->refresh()->status);
-    }
-
-    public function test_a_public_wishlist_does_not_show_the_reservation_progress_bar_or_availability_badge(): void
-    {
-        $owner = User::factory()->create();
-        $wishlist = Wishlist::factory()->for($owner)->public()->create();
-        GiftItem::factory()->for($wishlist)->create();
-
-        $response = $this->get(route('public.wishlists.show', $wishlist->share_code));
-
-        $response->assertOk();
-        $response->assertDontSee('Stav rezervovaných dárků');
-        $response->assertDontSee('Volné k rezervaci');
-    }
-
-    public function test_a_private_wishlist_still_shows_the_reservation_progress_bar_and_availability_badge(): void
+    public function test_every_shared_wishlist_shows_the_reservation_progress_bar_and_availability_badge(): void
     {
         $owner = User::factory()->create();
         $wishlist = Wishlist::factory()->for($owner)->create();

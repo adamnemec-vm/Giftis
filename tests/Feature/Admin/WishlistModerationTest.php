@@ -59,12 +59,17 @@ class WishlistModerationTest extends TestCase
         $this->assertSame('available', $item->refresh()->status);
     }
 
-    public function test_suspended_wishlist_is_excluded_from_the_public_feed(): void
+    public function test_suspended_wishlist_is_excluded_from_the_group_feed(): void
     {
         $viewer = User::factory()->create();
         $owner = User::factory()->create();
-        Wishlist::factory()->for($owner)->create(['title' => 'Suspended List', 'is_public' => true, 'suspended_at' => now()]);
-        Wishlist::factory()->for($owner)->create(['title' => 'Visible List', 'is_public' => true]);
+        $group = \App\Models\Group::factory()->for($owner, 'owner')->create();
+        $group->members()->attach([$owner->id => ['status' => 'accepted'], $viewer->id => ['status' => 'accepted']]);
+
+        $suspended = Wishlist::factory()->for($owner)->create(['title' => 'Suspended List', 'suspended_at' => now()]);
+        $visible = Wishlist::factory()->for($owner)->create(['title' => 'Visible List']);
+        $suspended->groups()->attach($group->id);
+        $visible->groups()->attach($group->id);
 
         $response = $this->actingAs($viewer)->get(route('dashboard'));
 

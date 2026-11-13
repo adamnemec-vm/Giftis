@@ -23,7 +23,6 @@ class StoreWishlistRequest extends FormRequest
             'description' => ['nullable', 'string', 'max:1000'],
             'occasion' => ['required', 'string', 'in:christmas,birthday,wedding,anniversary,other'],
             'event_date' => ['nullable', 'date'],
-            'is_public' => ['boolean'],
         ];
     }
 }

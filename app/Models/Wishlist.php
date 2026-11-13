@@ -16,12 +16,10 @@ class Wishlist extends Model
         'occasion',
         'event_date',
         'share_code',
-        'is_public',
     ];
 
     protected $casts = [
         'event_date' => 'date',
-        'is_public' => 'boolean',
         'suspended_at' => 'datetime',
     ];
 

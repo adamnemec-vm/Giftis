@@ -179,7 +179,6 @@ return [
         'description' => 'popis',
         'occasion' => 'příležitost',
         'event_date' => 'datum události',
-        'is_public' => 'veřejná viditelnost',
         'url' => 'odkaz',
         'price' => 'cena',
         'currency' => 'měna',

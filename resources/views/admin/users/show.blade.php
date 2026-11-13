@@ -120,7 +120,7 @@
                                         <span class="ml-1 bg-rose-100 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded-full">POZASTAVENO</span>
                                     @endif
                                 </div>
-                                <div class="text-xs text-gray-500">{{ $wishlist->items->count() }} položek · {{ $wishlist->is_public ? 'veřejný' : 'soukromý' }}</div>
+                                <div class="text-xs text-gray-500">{{ $wishlist->items->count() }} položek</div>
                             </div>
                             <span class="text-[#6B1D2F] text-xs font-semibold">Otevřít →</span>
                         </a>

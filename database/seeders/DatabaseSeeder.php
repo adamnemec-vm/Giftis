@@ -31,7 +31,6 @@ class DatabaseSeeder extends Seeder
             'occasion' => 'christmas',
             'event_date' => '2026-12-24',
             'share_code' => 'vanoce2026',
-            'is_public' => true,
         ]);
 
         GiftItem::create([
@@ -90,7 +89,6 @@ class DatabaseSeeder extends Seeder
             'occasion' => 'birthday',
             'event_date' => '2026-10-15',
             'share_code' => 'narozeniny30',
-            'is_public' => true,
         ]);
 
         GiftItem::create([
@@ -125,7 +123,6 @@ class DatabaseSeeder extends Seeder
             'occasion' => 'birthday',
             'event_date' => '2026-11-05',
             'share_code' => 'petr-narozeniny',
-            'is_public' => true,
         ]);
 
         GiftItem::create([

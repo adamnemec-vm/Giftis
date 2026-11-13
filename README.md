@@ -17,12 +17,11 @@ Majitel seznamu vidí jen to, že dárek už byl vybrán, ale **nevidí kým** �
 - **Anonymní rezervace** — kdokoliv s odkazem na seznam si může dárek "zamluvit" jako koupený; majitel seznamu vidí pouze stav rezervace, ne jméno rezervujícího.
 - **Rezervace i bez účtu** — hosté rezervují jen podle jména, se session tokenem a obnovovacím odkazem pro případ ztráty cookies.
 - **Skupinové dárky** — u dražších položek se může na dárek složit více lidí najednou (průběžné sledování vybrané částky).
-- **Veřejné seznamy jako inspirace** — seznam lze zveřejnit v přehledu pro ostatní uživatele; veřejné seznamy ale slouží jen jako inspirace a nejde v nich nic rezervovat (to je vyhrazené pro lidi, kteří dostali přímý odkaz).
 - **Skupiny** — založení uzavřené skupiny (rodina, přátelé), pozvání dalších uživatelů a výběr, které konkrétní seznamy skupina uvidí a může v nich rezervovat.
 - **Moje rezervace** — přehled všeho, co uživatel sám zarezervoval nebo na co přispěl, napříč všemi seznamy.
 - **Přihlášení přes Google** — kromě klasické registrace i OAuth přihlášení / registrace přes Google účet.
 - **QR kód** — ke každému seznamu lze vygenerovat QR kód pro snadné sdílení offline.
-- **Administrace** — správa uživatelů (reset hesla, ruční ověření e-mailu, "přihlásit se jako"), moderace veřejných seznamů (pozastavení) a mazání obsahu.
+- **Administrace** — správa uživatelů (reset hesla, ruční ověření e-mailu, "přihlásit se jako"), moderace sdílených seznamů (pozastavení) a mazání obsahu.
 - **České lokalizované validace** — formulářové chyby v češtině, ne v angličtině.
 
 ## 🛠️ Technologie
