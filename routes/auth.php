@@ -37,10 +37,15 @@ Route::middleware('guest')->group(function () {
 
     Route::get('auth/google/redirect', [GoogleController::class, 'redirect'])
         ->name('auth.google.redirect');
-
-    Route::get('auth/google/callback', [GoogleController::class, 'callback'])
-        ->name('auth.google.callback');
 });
+
+// Přihlášení přes Google z mobilní aplikace musí fungovat i v prohlížeči, kde už je otevřená webová session,
+// proto tyto dvě cesty nejsou omezené middlewarem "guest".
+Route::get('auth/google/mobile', [GoogleController::class, 'mobileRedirect'])
+    ->name('auth.google.mobile');
+
+Route::get('auth/google/callback', [GoogleController::class, 'callback'])
+    ->name('auth.google.callback');
 
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)

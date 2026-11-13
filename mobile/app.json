@@ -1,0 +1,55 @@
+{
+  "expo": {
+    "name": "Giftis",
+    "slug": "giftis",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "cz.giftis.app",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Giftis potřebuje přístup k fotkám, abyste mohli k dárku přidat vlastní obrázek."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#6B1D2F",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "cz.giftis.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-font",
+      "expo-web-browser",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "backgroundColor": "#6B1D2F"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Giftis potřebuje přístup k fotkám, abyste mohli k dárku přidat vlastní obrázek.",
+          "cameraPermission": "Giftis potřebuje fotoaparát, abyste mohli dárek vyfotit."
+        }
+      ]
+    ],
+    "scheme": "giftis",
+    "backgroundColor": "#FAF7F2"
+  }
+}
